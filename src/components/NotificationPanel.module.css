@@ -1,0 +1,80 @@
+/* src/components/NotificationPanel.module.css */
+
+.panelButton {
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #64748b;
+}
+.panelButton:hover {
+  color: #1e293b;
+}
+.badge {
+  position: absolute;
+  top: -4px;
+  right: -8px;
+  background: #ef4444;
+  color: white;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  font-size: 0.7rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.panelContainer {
+  position: absolute;
+  top: calc(100% + 1rem);
+  right: 0;
+  width: 380px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px -5px rgba(0,0,0,0.2);
+  border: 1px solid #e5e7eb;
+  z-index: 1000;
+  overflow: hidden;
+}
+.header {
+  padding: 1rem 1.5rem;
+  font-weight: 700;
+  font-size: 1.125rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+.notificationList {
+  max-height: 400px;
+  overflow-y: auto;
+}
+.notificationItem {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #f3f4f6;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.notificationItem:hover {
+  background-color: #f9fafb;
+}
+.icon {
+  color: #6366f1;
+}
+.text {
+  font-size: 0.95rem;
+  color: #374151;
+}
+.text strong {
+  color: #111827;
+}
+.timestamp {
+  font-size: 0.8rem;
+  color: #9ca3af;
+  margin-top: 0.25rem;
+}
+.emptyState {
+  padding: 2rem;
+  text-align: center;
+  color: #6b7280;
+}

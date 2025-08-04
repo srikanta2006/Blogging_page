@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-cornsilk; /* Sets the beautiful cornsilk color as the main background */
+}

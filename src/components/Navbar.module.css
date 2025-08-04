@@ -1,0 +1,281 @@
+/* src/components/Navbar.module.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+/* Root variables for the color palette */
+:root {
+  --background: #F9FAFB;
+  --card-bg: #FFFFFF;
+  --primary-text: #1F2A44;
+  --secondary-text: #6B7280;
+  --accent: #3B82F6;
+}
+
+/* Navbar */
+.navbar {
+  position: sticky; /* Retained for visibility while scrolling */
+  top: 0;
+  width: 100%; /* Full viewport width */
+  z-index: 1000;
+  background: rgba(31, 42, 68, 0.95); /* primary-text for contrast */
+  backdrop-filter: blur(20px);
+  border-bottom: 2px solid var(--accent); /* accent border for visibility */
+}
+
+/* Container */
+.container {
+  width: 100%; /* Full width, no max-width */
+  margin: 0;
+  padding: 0; /* Remove padding to eliminate side gaps */
+}
+
+/* Content */
+.content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 72px;
+  flex-wrap: nowrap;
+  padding: 0 1.5rem; /* Internal padding for content */
+}
+
+/* Left Section */
+.leftSection {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+.logo {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.75rem;
+  font-weight: 800;
+  text-decoration: none;
+  background: linear-gradient(135deg, var(--card-bg), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Nav Links (Hidden by default on mobile) */
+.navLinks {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .navLinks {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+}
+
+/* Links */
+.link {
+  font-family: 'Inter', sans-serif;
+  color: var(--card-bg);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.5rem 1.25rem;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+}
+
+.link:hover {
+  color: var(--accent);
+  background: rgba(59, 130, 246, 0.1);
+}
+
+/* Right Section */
+.rightSection {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-direction: row;
+}
+
+/* Buttons */
+.button {
+  font-family: 'Inter', sans-serif;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: var(--accent);
+  color: var(--card-bg);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button:hover {
+  background: var(--primary-text);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(31, 42, 68, 0.3);
+}
+
+/* Profile Menu & Dropdown */
+.profileMenu {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.avatarButton {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--secondary-text);
+  transition: all 0.3s ease;
+}
+
+.avatarButton:hover .avatar {
+  border-color: var(--accent);
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 1rem);
+  right: 0;
+  width: 240px;
+  background: var(--card-bg);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(31, 42, 68, 0.1);
+  border: 1px solid var(--secondary-text);
+  z-index: 1001;
+  opacity: 0;
+  transform: translateY(10px);
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.dropdown.open {
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+}
+
+.dropdownHeader {
+  padding: 1.25rem;
+  border-bottom: 1px solid var(--secondary-text);
+}
+
+.dropdownUsername {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  color: var(--primary-text);
+  margin: 0;
+}
+
+.dropdownEmail {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+  color: var(--secondary-text);
+  margin: 0.5rem 0 0 0;
+}
+
+.dropdownMenu {
+  padding: 0.75rem;
+}
+
+.dropdownLink,
+.dropdownButton {
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: var(--secondary-text);
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s ease;
+}
+
+.dropdownLink:hover,
+.dropdownButton:hover {
+  background: rgba(59, 130, 246, 0.1);
+  color: var(--accent);
+}
+
+.logoutButton {
+  color: var(--accent);
+}
+
+.logoutButton:hover {
+  background: rgba(59, 130, 246, 0.1);
+  color: var(--accent);
+}
+
+/* Mobile Hamburger Button */
+.hamburgerButton {
+  background: none;
+  border: none;
+  padding: 0.75rem;
+  cursor: pointer;
+  color: var(--card-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.hamburgerButton:hover {
+  background: rgba(59, 130, 246, 0.1);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 767px) {
+  .content {
+    height: 60px;
+    padding: 0 1rem; /* Adjusted for mobile */
+  }
+
+  .logo {
+    font-size: 1.5rem;
+  }
+
+  .rightSection {
+    gap: 1.25rem;
+  }
+
+  .button {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  .avatar {
+    width: 32px;
+    height: 32px;
+  }
+
+  .dropdown {
+    width: 200px;
+  }
+}
