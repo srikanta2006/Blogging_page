@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html, body {
+  overflow-x: hidden; /* This prevents horizontal scrolling */
+}
+
 body {
-  @apply bg-cornsilk; /* Sets the beautiful cornsilk color as the main background */
+  @apply bg-slate-50; /* A slightly nicer background color */
 }

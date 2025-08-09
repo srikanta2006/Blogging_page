@@ -9,7 +9,7 @@ const firebaseConfig = {
   projectId: "mybloggingapp-c3d04",
   storageBucket: "mybloggingapp-c3d04.firebasestorage.app",
   messagingSenderId: "430252143768",
-  appId: "1:430252143768:web:bef308784fb99cfcc78ced"
+  appId: import.meta.env.VITE_APP_ID
 };
 
 const app = initializeApp(firebaseConfig);

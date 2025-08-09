@@ -7,6 +7,7 @@ import { doc, getDoc, collection, query, where, onSnapshot } from 'firebase/fire
 import { useAuth } from '../context/AuthContext';
 import FollowButton from '../components/FollowButton';
 import ShareButton from '../components/ShareButton';
+import Avatar from '../components/Avatar'; // 1. Import the new component
 import styles from './ProfilePage.module.css';
 import { Edit2, MapPin } from 'lucide-react';
 
@@ -49,9 +50,10 @@ function ProfilePage() {
         </div>
         <div className={styles.profileInfo}>
           <div className={styles.mainInfo}>
-            <img 
-              src={profile.profilePictureURL || `https://i.pravatar.cc/160?u=${userId}`} 
-              alt={profile.username} 
+            {/* 2. Replace the img tag with the Avatar component */}
+            <Avatar 
+              src={profile.profilePictureURL}
+              name={profile.username}
               className={styles.profilePicture}
             />
             <div className="flex-grow" />
@@ -63,7 +65,7 @@ function ProfilePage() {
               ) : (
                 <FollowButton profileUserId={userId} />
               )}
-              <ShareButton title={profile.username} text={`Check out ${profile.username}'s profile on Blogify!`} />
+              <ShareButton title={profile.username} text={`Check out ${profile.username}'s profile on Blogzilla!`} />
             </div>
           </div>
         </div>

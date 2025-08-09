@@ -2,12 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { db } from '../firebase/config';
-import { collection, query, where, onSnapshot, getDoc, doc } from 'firebase/firestore';
+import { collection, query, where, orderBy, onSnapshot, limit, getDoc, doc } from 'firebase/firestore';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import styles from './HomePage.module.css';
 import LikeButton from '../components/LikeButton';
 import BookmarkButton from '../components/BookmarkButton';
+import Avatar from '../components/Avatar'; // Your recent addition
 import { TrendingUp } from 'lucide-react';
 
 function HomePage() {
@@ -17,11 +18,23 @@ function HomePage() {
   const [feedType, setFeedType] = useState('global');
   const { currentUser } = useAuth();
 
-  // THE FIX: We now use a single, unified useEffect for all data fetching.
+  // Data fetching logic for Top Post (remains the same)
+  useEffect(() => {
+    if (feedType !== 'global') {
+      setTopPost(null);
+      return;
+    }
+    const topPostQuery = query(collection(db, 'posts'), where('status', '==', 'published'), orderBy('viewCount', 'desc'), limit(1));
+    const unsubscribe = onSnapshot(topPostQuery, (snapshot) => {
+      setTopPost(snapshot.empty ? null : { id: snapshot.docs[0].id, ...snapshot.docs[0].data() });
+    });
+    return unsubscribe;
+  }, [feedType]);
+
+  // Data fetching logic for the main feed (remains the same)
   useEffect(() => {
     setLoading(true);
     let unsubscribe;
-
     const fetchFeed = async () => {
       let postsQuery;
       if (feedType === 'following' && currentUser) {
@@ -31,35 +44,18 @@ function HomePage() {
         if (followingList.length > 0) {
           postsQuery = query(collection(db, 'posts'), where('authorId', 'in', followingList), where('status', '==', 'published'));
         } else {
-          setPosts([]);
-          setTopPost(null);
-          setLoading(false);
-          return;
+          setPosts([]); setLoading(false); return;
         }
       } else {
-        // Global feed query
         postsQuery = query(collection(db, 'posts'), where('status', '==', 'published'));
       }
-
       unsubscribe = onSnapshot(postsQuery, (snapshot) => {
         let fetchedPosts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-
-        // Sort by date for the main feed
         fetchedPosts.sort((a, b) => (b.publishedAt?.toDate() || 0) - (a.publishedAt?.toDate() || 0));
         setPosts(fetchedPosts);
-
-        // If it's the global feed, find the top post from the same data
-        if (feedType === 'global' && fetchedPosts.length > 0) {
-          const sortedByViews = [...fetchedPosts].sort((a, b) => (b.viewCount || 0) - (a.viewCount || 0));
-          setTopPost(sortedByViews[0]);
-        } else {
-          setTopPost(null);
-        }
-        
         setLoading(false);
       });
     };
-
     fetchFeed();
     return () => { if (unsubscribe) unsubscribe(); };
   }, [feedType, currentUser]);
@@ -72,7 +68,7 @@ function HomePage() {
 
   return (
     <div className={styles.pageLayout}>
-      <main className="col-span-full">
+      <main>
         <div className={styles.tabContainer}>
           <div className={styles.tabList}>
             <button onClick={() => setFeedType('global')} className={`${styles.tab} ${feedType === 'global' ? styles.tabActive : ''}`}>Global</button>
@@ -96,7 +92,11 @@ function HomePage() {
                       <p className={styles.postDate}>{post.publishedAt?.toDate().toLocaleDateString()}</p>
                     </div>
                     <Link to={`/profile/${post.authorId}`}>
-                      <img src={post.authorProfilePic || `https://i.pravatar.cc/40?u=${post.authorId}`} alt={post.authorUsername} className={styles.authorImage} />
+                      <Avatar 
+                        src={post.authorProfilePic}
+                        name={post.authorUsername}
+                        className={styles.authorImage}
+                      />
                     </Link>
                   </div>
                 </header>
@@ -111,13 +111,20 @@ function HomePage() {
         )}
       </main>
 
+      {/* THE FIX: The Trending Post sidebar is now restored */}
       {feedType === 'global' && topPost && (
         <aside className={`${styles.sidebar} hidden lg:block`}>
           <div className={styles.trendingPostContainer}>
             <header className={styles.sectionHeader}><TrendingUp size={24} /><h2 className={styles.sectionTitle}>Trending Post</h2></header>
             <div className={styles.trendingPostContent}>
               <header className={styles.postHeader}>
-                <Link to={`/profile/${topPost.authorId}`}><img src={topPost.authorProfilePic || `https://i.pravatar.cc/48?u=${topPost.authorId}`} alt={topPost.authorUsername} className={styles.authorImage} /></Link>
+                <Link to={`/profile/${topPost.authorId}`}>
+                  <Avatar 
+                    src={topPost.authorProfilePic}
+                    name={topPost.authorUsername}
+                    className={styles.authorImage}
+                  />
+                </Link>
                 <div>
                   <Link to={`/profile/${topPost.authorId}`}><p className={styles.authorName}>{topPost.authorUsername}</p></Link>
                   <p className={styles.postDate}>{topPost.publishedAt?.toDate().toLocaleDateString()}</p>

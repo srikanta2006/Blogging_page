@@ -1,4 +1,3 @@
-
 // src/pages/PostEditor.jsx
 
 import { useState, useEffect, useRef } from 'react';
@@ -59,15 +58,10 @@ function PostEditor() {
       const currentContent = editorRef.current.getContent();
       const categoriesArray = categories.split(',').map(cat => cat.trim()).filter(cat => cat !== '');
       
-      // THE FIX IS HERE: We now add the author's profile picture URL to the post data.
       const postData = {
-        title, 
-        content: currentContent, 
-        categories: categoriesArray, 
-        status,
-        authorId: currentUser.uid, 
-        authorUsername: currentUser.displayName || currentUser.email,
-        authorProfilePic: currentUser.photoURL || '', // This line is new
+        title, content: currentContent, categories: categoriesArray, status,
+        authorId: currentUser.uid, authorUsername: currentUser.displayName || currentUser.email,
+        authorProfilePic: currentUser.photoURL || '',
         lastUpdatedAt: serverTimestamp(),
       };
 
@@ -108,7 +102,8 @@ function PostEditor() {
         />
         <div className={styles.editorContainer}>
           <Editor
-            apiKey="i0s7ozptu5vyr0pzbdu339domhzm9zvyspbfgax3bj8ja9v5"
+            // THE FIX IS HERE:
+            apiKey={import.meta.env.VITE_TINYMCE_API_KEY}
             onInit={(evt, editor) => editorRef.current = editor}
             value={content}
             onEditorChange={(newContent) => setContent(newContent)}

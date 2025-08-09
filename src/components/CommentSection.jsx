@@ -5,6 +5,7 @@ import { db } from '../firebase/config';
 import { collection, query, orderBy, onSnapshot, addDoc, serverTimestamp } from 'firebase/firestore';
 import { useAuth } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
+import Avatar from './Avatar'; // Import the new Avatar component
 import styles from './CommentSection.module.css';
 
 function CommentSection({ postId, postAuthorId, postTitle }) {
@@ -25,17 +26,15 @@ function CommentSection({ postId, postAuthorId, postTitle }) {
     if (!newComment.trim() || !currentUser) return;
 
     try {
-      // THE FIX IS HERE: We now save the user's photoURL with the comment
       await addDoc(collection(db, 'posts', postId, 'comments'), {
         text: newComment,
         authorId: currentUser.uid,
         authorUsername: currentUser.displayName || currentUser.email,
-        authorProfilePic: currentUser.photoURL || '', // This line is new
+        authorProfilePic: currentUser.photoURL || '',
         createdAt: serverTimestamp()
       });
       setNewComment('');
 
-      // Create notification for the post author
       if (postAuthorId !== currentUser.uid) {
         const notificationRef = collection(db, 'users', postAuthorId, 'notifications');
         await addDoc(notificationRef, {
@@ -73,11 +72,11 @@ function CommentSection({ postId, postAuthorId, postTitle }) {
       <div className={styles.commentList}>
         {comments.map(comment => (
           <div key={comment.id} className={styles.comment}>
-            {/* THE FIX IS HERE: We use the saved photoURL, with a fallback */}
-            <img 
-              src={comment.authorProfilePic || `https://i.pravatar.cc/40?u=${comment.authorId}`} 
-              alt={comment.authorUsername} 
-              className={styles.commentAuthorImage} 
+            {/* Replace the old img tag with the new Avatar component */}
+            <Avatar 
+              src={comment.authorProfilePic}
+              name={comment.authorUsername}
+              className={styles.commentAuthorImage}
             />
             <div className={styles.commentBody}>
               <p>

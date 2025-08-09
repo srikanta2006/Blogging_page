@@ -25,7 +25,7 @@ function SignUp() {
         username: username,
         email: email,
         bio: '',
-        profilePictureURL: `https://i.pravatar.cc/150?u=${user.uid}`,
+        profilePictureURL: '', // THE FIX: This is now blank by default
         followers: [],
         following: [],
         createdAt: serverTimestamp(),
@@ -50,7 +50,7 @@ function SignUp() {
           username: user.displayName,
           email: user.email,
           bio: '',
-          profilePictureURL: user.photoURL,
+          profilePictureURL: user.photoURL || '', // Keeps Google photo if available
           followers: [],
           following: [],
           createdAt: serverTimestamp(),
