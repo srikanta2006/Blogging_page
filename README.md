@@ -4,7 +4,8 @@
 
 Welcome to **My Blog App**, a fully-functional, responsive blogging platform designed for content creators. This application provides a seamless experience for reading, creating, and managing blog posts with real-time synchronization, secure authentication, and an intuitive user interface.
 
-**Live URL**: https://blogging-page-gamma.vercel.app/home
+**Live URL**: https://blogging-page-gamma.vercel.app/
+
 **Demo Account**: Use any created account to explore  
 **Last Updated**: January 31, 2026
 
